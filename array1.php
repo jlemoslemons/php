@@ -1,43 +1,31 @@
 <?php
-$preto = "\033[30m";
-$verde = "\033[102m";
-$amarelo = "\033[43m";
-$reset = "\033[0m";
+$cores = ["\033[30m", "\033[102m", "\033[43m", "\033[0m"];
+$classe = [];
 
-// Array para armazenar os dados dos alunos
-$classe = [
-    ["aluno" => "Ana", "nota" => "8.5"],
-    ["aluno" => "Carlos", "nota" => "7.2"],
-    ["aluno" => "Beatriz", "nota" => "9.1"],
-    ["aluno" => "Diego", "nota" => "6.8"],
-    ["aluno" => "Fernanda", "nota" => "8.9"],
-    ["aluno" => "Gabriel", "nota" => "7.5"],
-    ["aluno" => "Helena", "nota" => "9.3"],
-    ["aluno" => "Igor", "nota" => "6.4"],
-    ["aluno" => "Juliana", "nota" => "8.7"],
-    ["aluno" => "Lucas", "nota" => "7.9"],
-];
+echo $cores[2] . $cores[0] . " SISTEMA DE NOTAS DA CLASSE " . $cores[3] . "\n";
 
-// Calcular média da classe
-$somaNotas = 0;
-$maiorNota = $classe[0]["nota"];
-$alunoMaiorNota = $classe[0]["aluno"];
-
-foreach ($classe as $estudante) {
-    $somaNotas += $estudante["nota"];
+for ($i = 1; $i <= 10; $i++) {
+    echo "--- Aluno $i ---\nNome: ";
+    $nome = trim(fgets(STDIN));
     
-    // Verificar se é a maior nota
-    if ($estudante["nota"] > $maiorNota) {
-        $maiorNota = $estudante["nota"];
-        $alunoMaiorNota = $estudante["aluno"];
-    }
+    do {
+        echo "Nota (0-10): ";
+        $nota = (float)trim(fgets(STDIN));
+        if ($nota < 0 || $nota > 10) echo "Nota inválida!\n";
+    } while ($nota < 0 || $nota > 10);
+    
+    $classe[] = ["aluno" => $nome, "nota" => $nota];
 }
 
-$mediaClasse = $somaNotas / count($classe);
+$notas = array_column($classe, "nota");
+$maxIndex = array_keys($notas, max($notas))[0];
+$media = array_sum($notas) / count($notas);
 
-// Exibir resultados
-echo $amarelo . $preto . " RESULTADOS DA TURMA " . $reset . "\n";
-echo $verde . $preto . "Média da classe: " . number_format($mediaClasse, 2) . "\n";
-echo $verde . $preto . "Aluno com maior nota: $alunoMaiorNota (Nota: $maiorNota) " . $reset;
+echo $cores[2] . $cores[0] . " RESULTADOS " . $cores[3] . "\n";
+echo "Média: " . number_format($media, 2) . "\n";
+echo $cores[1] . $cores[0] . " Maior nota: {$classe[$maxIndex]['aluno']} ({$notas[$maxIndex]}) " . $cores[3] . "\n\n";
+
+foreach ($classe as $i => $aluno) {
+    echo ($i + 1) . ". {$aluno['aluno']} - {$aluno['nota']}\n";
+}
 ?>
-<!-- não finalizado -->
