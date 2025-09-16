@@ -2,31 +2,48 @@
 $preto = "\033[30m";
 $verde = "\033[102m";
 $amarelo = "\033[43m";
+$azul = "\033[44m";
 $reset = "\033[0m";
 
-$numeros = [15, -8, 23, -12, 7, -3, 18, -25, 4, -1];
+$numeros = [];
 
-echo $amarelo . $preto . " IDENTIFICADOR DE NÚMEROS " . $reset . "\n";
+echo $amarelo . $preto . " ANALISADOR DE NÚMEROS " . $reset . "\n";
+echo "Digite 10 números:\n\n";
 
-echo "Digite o primeiro número: ";
-$a = (float)trim(fgets(STDIN));
+// Coletando os 10 números
+for ($i = 0; $i < 10; $i++) {
+    echo "Digite o " . ($i + 1) . "º número: ";
+    $numeros[$i] = (float)trim(fgets(STDIN));
+}
 
-do {
-echo "Digite o operador (+ - * /): ";
-$op = trim(fgets(STDIN));
-} while (!in_array($op, ['+', '-', '*', '/']));
+// Inicializando contadores
+$negativos = 0;
+$positivos = 0;
+$pares = 0;
+$impares = 0;
 
-echo "Digite o segundo número: ";
-$b = (float)trim(fgets(STDIN));
+// Analisando os números
+foreach ($numeros as $numero) {
+    // Contando negativos e positivos
+    if ($numero < 0) {
+        $negativos++;
+    } elseif ($numero > 0) {
+        $positivos++;
+    }
+    
+    // Contando pares e ímpares
+    if ($numero % 2 == 0) {
+        $pares++;
+    } else {
+        $impares++;
+    }
+}
 
-$resultado = match ($op) {
-'+' => $a + $b,
-'-' => $a - $b,
-'*' => $a * $b,
-'/' => $b != 0 ? $a / $b : "Erro: divisão por zero",
-default => "Operador inválido",
-};
-
-echo $verde . $preto . " Resultado: $resultado " . $reset . "\n";
+// Exibindo os resultados
+echo "\n" . $verde . $preto . " RESULTADOS DA ANÁLISE " . $reset . "\n";
+echo "Análise dos números:\n";
+echo "Números negativos: $negativos\n";
+echo "Números positivos: $positivos\n";
+echo "Números pares: $pares\n";
+echo "Números ímpares: $impares\n";
 ?>
-<!-- não finalizado -->
